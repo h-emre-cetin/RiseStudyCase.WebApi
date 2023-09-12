@@ -21,7 +21,7 @@ namespace RiseStudyCase.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("/getall")]
+        [Route("/get")]
         public IActionResult Get()
         {
             return Ok(Summaries);
