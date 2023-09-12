@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using RiseStudyCase.WebApi.Business.Abstract;
 using RiseStudyCase.WebApi.Models;
+using RiseStudyCase.WebApi.Repositories.EntitiyFramework;
 
 namespace RiseStudyCase.WebApi.Controllers
 {
@@ -7,51 +9,52 @@ namespace RiseStudyCase.WebApi.Controllers
     [Route("[controller]/contacts")]
     public class ContactController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
+       
         private readonly ILogger<ContactController> _logger;
-
-        public ContactController(ILogger<ContactController> logger)
+        IContactRepository _contactRepository;
+        public ContactController(ILogger<ContactController> logger, EfContactRepository efContactRepository)
         {
             _logger = logger;
+            _contactRepository = efContactRepository;
         }
 
         [HttpGet]
         [Route("/get")]
-        public IActionResult Get()
+        public IActionResult Get(Guid id)
         {
-            return Ok(Summaries);
+            var res = _contactRepository.Get(id);
+
+            return Ok(res);
+
         }
 
         [HttpGet]
         [Route("/getall")]
         public IActionResult GetAll()
         {
-            return Ok(Summaries);
+            return Ok();
         }
 
         [HttpPost]
         [Route("/create")]
         public IActionResult Create(ContactModel contact)
         {
-            return Ok(Summaries);
+            var res = _contactRepository.Create(contact);
+            return Ok(res);
         }
 
         [HttpPatch]
         [Route("/remove")]
         public IActionResult RemoveContact(Guid id)
         {
-            return Ok(Summaries);
+            return Ok();
         }
 
         [HttpPut]
         [Route("/update")]
         public IActionResult UpdateContact(ContactModel contact)
         {
-            return Ok(Summaries);
+            return Ok();
         }
 
         [HttpDelete]
@@ -65,14 +68,14 @@ namespace RiseStudyCase.WebApi.Controllers
         [Route("/addinfo")]
         public IActionResult AddInfo(Guid id, ContactType contactType, string contactInfo)
         {
-            return Ok(Summaries);
+            return Ok();
         }
 
         [HttpPatch]
         [Route("/removeinfo")]
         public IActionResult RemoveInfo(Guid id, ContactType contactTyp)
         {
-            return Ok(Summaries);
+            return Ok();
         }
 
     }

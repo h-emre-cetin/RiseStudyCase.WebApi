@@ -8,9 +8,9 @@ namespace RiseStudyCase.WebApi.Business.Abstract
 
         ContactReportModel GetReportOfLocationRank();
 
-        ContactReportModel GetReportOfLocationContactCount();
+        ContactReportModel GetReportOfLocationContactCount(string location);
 
-        ContactReportModel GetReportOfLocationPhoneNumberCount();
+        ContactReportModel GetReportOfLocationPhoneNumberCount(string location);
 
     }
 }
