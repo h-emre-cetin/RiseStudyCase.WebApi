@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using RiseStudyCase.WebApi.Models;
 
 namespace RiseStudyCase.WebApi.Controllers
 {

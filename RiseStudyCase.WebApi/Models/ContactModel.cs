@@ -10,18 +10,11 @@
 
         public string Company { get; set; }
 
-        ContactType ContactType { get; set; }
-
-        public string ContactInfo { get; set; }
+        public List<ContactInfoModel> ContactInfos { get; set; }
 
         public bool IsActive { get; set; }
 
     }
 
-    public enum ContactType
-    {
-        PhoneNumber,
-        Email,
-        Location,
-    }
+   
 }

@@ -4,13 +4,26 @@ using RiseStudyCase.WebApi.Models;
 
 namespace RiseStudyCase.WebApi.Business.Concrete
 {
-    public class ContactService : IContactService
+    public class ContactRepository : IContactRepository
     {
+        List<ContactModel> _contacts;
+
         private readonly ILogger<ContactController> _logger;
 
-        public ContactService(ILogger<ContactController> logger)
+        public ContactRepository(ILogger<ContactController> logger)
         {
             _logger = logger;
+            _contacts = new List<ContactModel>
+            {
+                new ContactModel
+                {
+                    Id=Guid.NewGuid(),
+                    Name = "Emre",
+                    Surname = "Cetin",
+                    Company = "Rise",
+                    IsActive = true
+                }
+            };
         }
 
         public bool AddInfo(Guid id, ContactType contactType, string contactInfo)

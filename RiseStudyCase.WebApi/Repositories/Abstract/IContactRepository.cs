@@ -2,7 +2,7 @@
 
 namespace RiseStudyCase.WebApi.Business.Abstract
 {
-    public interface IContactService
+    public interface IContactRepository
     {
         ContactModel Get(Guid id);
 

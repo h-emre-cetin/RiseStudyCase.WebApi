@@ -2,7 +2,7 @@
 
 namespace RiseStudyCase.WebApi.Business.Abstract
 {
-    public interface IContactReportService
+    public interface IContactReportRepository
     {
         ContactReportModel GetReportByLocation();
 
