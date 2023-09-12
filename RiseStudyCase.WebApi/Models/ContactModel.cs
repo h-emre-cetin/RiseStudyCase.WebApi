@@ -14,9 +14,11 @@
 
         public string ContactInfo { get; set; }
 
+        public bool IsActive { get; set; }
+
     }
 
-    enum ContactType
+    public enum ContactType
     {
         PhoneNumber,
         Email,
