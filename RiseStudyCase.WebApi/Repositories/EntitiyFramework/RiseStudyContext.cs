@@ -1,15 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using RiseStudyCase.WebApi.Models;
 
 namespace RiseStudyCase.WebApi.Repositories.EntitiyFramework
 {
     public class RiseStudyContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public RiseStudyContext() : base()
         {
-            optionsBuilder.UseSqlServer("");
-            base.OnConfiguring(optionsBuilder);
+
         }
+
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("");
+        //    base.OnConfiguring(optionsBuilder);
+        //}
 
         public DbSet<ContactModel> Contacts { get; set; }
 

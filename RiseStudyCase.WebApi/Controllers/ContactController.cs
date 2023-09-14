@@ -6,7 +6,7 @@ using RiseStudyCase.WebApi.Repositories.EntitiyFramework;
 namespace RiseStudyCase.WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]/contacts")]
+    [Route("[controller]")]
     public class ContactController : ControllerBase
     {
        
@@ -32,6 +32,8 @@ namespace RiseStudyCase.WebApi.Controllers
         [Route("/getall")]
         public IActionResult GetAll()
         {
+            var res = _contactRepository.GetAll();
+
             return Ok();
         }
 
@@ -40,6 +42,10 @@ namespace RiseStudyCase.WebApi.Controllers
         public IActionResult Create(ContactModel contact)
         {
             var res = _contactRepository.Create(contact);
+
+            //var response = HttpContext.Response.StatusCode = 201;
+
+
             return Ok(res);
         }
 
@@ -47,6 +53,8 @@ namespace RiseStudyCase.WebApi.Controllers
         [Route("/remove")]
         public IActionResult RemoveContact(Guid id)
         {
+            var res = _contactRepository.Remove(id);
+
             return Ok();
         }
 
@@ -54,28 +62,36 @@ namespace RiseStudyCase.WebApi.Controllers
         [Route("/update")]
         public IActionResult UpdateContact(ContactModel contact)
         {
-            return Ok();
+            var res = _contactRepository.Update(contact);
+
+            return Ok(res);
         }
 
         [HttpDelete]
         [Route("/delete")]
         public IActionResult DeleteContact(Guid id)
         {
-            return Ok();
+            var res = _contactRepository.Delete(id);
+
+            return NoContent();
         }
 
         [HttpPatch]
         [Route("/addinfo")]
         public IActionResult AddInfo(Guid id, ContactType contactType, string contactInfo)
         {
-            return Ok();
+            var res = _contactRepository.AddInfo(id, contactType, contactInfo);
+
+            return Ok(res);
         }
 
         [HttpPatch]
         [Route("/removeinfo")]
-        public IActionResult RemoveInfo(Guid id, ContactType contactTyp)
+        public IActionResult RemoveInfo(Guid id, ContactType contactType)
         {
-            return Ok();
+            var res = _contactRepository.RemoveInfo(id, contactType);
+
+            return Ok(res);
         }
 
     }

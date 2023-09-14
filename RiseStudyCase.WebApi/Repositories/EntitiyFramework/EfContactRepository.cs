@@ -1,97 +1,220 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RiseStudyCase.WebApi.Business.Abstract;
+using RiseStudyCase.WebApi.Controllers;
 using RiseStudyCase.WebApi.Models;
+using System.Reflection;
 
 namespace RiseStudyCase.WebApi.Repositories.EntitiyFramework
 {
     public class EfContactRepository : IContactRepository
     {
         RiseStudyContext _context;
-
-        public EfContactRepository(RiseStudyContext context)
+        private readonly ILogger _logger;
+        
+        public EfContactRepository(RiseStudyContext context, ILogger<ContactController> logger)
         {
+            _logger = logger;
             _context = context;
         }
+       
         public bool AddInfo(Guid id, ContactType contactType, string contactInfo)
         {
-            var info = new ContactInfoModel { ContactId = id, ContactType = contactType, Content = contactInfo };
+            const string methodName = nameof(AddInfo);
+            try
+            {
+                _logger.LogTrace($"[{methodName}] Invoked");
 
-            var contact = _context.Contacts.Where(c=> c.Id == id).FirstOrDefault();
+                var info = new ContactInfoModel { ContactId = id, ContactType = contactType, Content = contactInfo };
 
-            contact.ContactInfos.Add(info);
+                _logger.LogDebug($"[{methodName}] Getting contact info with giving id");
+                var contact = _context.Contacts.Where(c => c.Id == id).FirstOrDefault();
 
-            _context.SaveChanges();
-            
-            return true;
+                _logger.LogDebug($"[{methodName}] Adding infos to given contact");
+                contact.ContactInfos.Add(info);
+
+                _context.SaveChanges();
+
+                return true;
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{methodName}] Failed, reason: {ex.Message}");
+                throw;
+            }
         }
 
         public ContactModel Create(ContactModel contact)
         {
-           _context.Contacts.Add(contact);
-           
-            _context.SaveChanges();
-            
-            return contact;
+            const string methodName = nameof(Create);
+
+            try
+            {
+                _logger.LogTrace($"[{methodName}] Invoked");
+
+                _logger.LogDebug($"[{methodName}] Contact is creating");
+                _context.Contacts.Add(contact);
+
+
+                _context.SaveChanges();
+
+                _logger.LogTrace($"[{methodName}] Returning result.");
+                return contact;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{methodName}] Failed, reason: {ex.Message}");
+                throw;
+            }
+
         }
 
         public bool Delete(Guid id)
         {
-            var contact = _context.Contacts.Where(c => c.Id == id).FirstOrDefault();
-            
-            _context.Contacts.Remove(contact);
-            
-            _context.SaveChanges();
 
-            return true;
+            const string methodName = nameof(Delete);
+
+            try
+            {
+                _logger.LogTrace($"[{methodName}] Invoked");
+
+                _logger.LogDebug($"[{methodName}] Getting contact info with giving id");
+                var contact = _context.Contacts.Where(c => c.Id == id).FirstOrDefault();
+
+                _logger.LogDebug($"[{methodName}] Contact is deleting");
+                _context.Contacts.Remove(contact);
+
+                _context.SaveChanges();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{methodName}] Failed, reason: {ex.Message}");
+                throw;
+            }
+
         }
 
         public ContactModel Get(Guid id)
         {
-            return _context.Contacts.Where(c => c.Id == id).FirstOrDefault();
+            const string methodName = nameof(Get);
+
+            try
+            {
+                _logger.LogTrace($"[{methodName}] Invoked");
+
+                _logger.LogDebug($"[{methodName}] Getting contact with giving id");
+                return _context.Contacts.Where(c => c.Id == id).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{methodName}] Failed, reason: {ex.Message}");
+                throw;
+            }
         }
 
         public List<ContactModel> GetAll()
         {
-            var getContact = _context.Contacts.ToList();
-            
-            return getContact;
+            const string methodName = nameof(GetAll);
+
+            try
+            {
+                _logger.LogTrace($"[{methodName}] Invoked");
+
+                _logger.LogDebug($"[{methodName}] Getting all contacts");
+                var getContact = _context.Contacts.ToList();
+
+                return getContact;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{methodName}] Failed, reason: {ex.Message}");
+                throw;
+            }
         }
 
         public bool Remove(Guid id)
         {
-            var contact = _context.Contacts.Where(c => c.Id == id).FirstOrDefault();
+            const string methodName = nameof(Remove);
+
+            try
+            {
+                _logger.LogTrace($"[{methodName}] Invoked");
+
+                _logger.LogDebug($"[{methodName}] Getting contact info with giving id");
+                var contact = _context.Contacts.Where(c => c.Id == id).FirstOrDefault();
+
+                _logger.LogDebug($"[{methodName}] Givinmg contact status setting to removed");
+                contact.IsActive = false;
+
+                _context.SaveChanges();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{methodName}] Failed, reason: {ex.Message}");
+                throw;
+            }
             
-            contact.IsActive = false;
-           
-            _context.SaveChanges();
-            
-            return true;
         }
 
         public bool RemoveInfo(Guid id, ContactType contactType)
         {
-            var contactInfo = _context.ContactsInfos.Where(c => c.ContactId == id && c.ContactType == contactType).FirstOrDefault();
+            const string methodName = nameof(RemoveInfo);
+
+            try
+            {
+                _logger.LogTrace($"[{methodName}] Invoked");
+
+                _logger.LogDebug($"[{methodName}] Getting contact info with giving parameters");
+                var contactInfo = _context.ContactsInfos.Where(c => c.ContactId == id && c.ContactType == contactType).FirstOrDefault();
+
+                _logger.LogDebug($"[{methodName}] Contact infos are removing");
+                _context.ContactsInfos.Remove(contactInfo);
+
+                _context.SaveChanges();
+
+                return true;
+            }
+            catch (Exception ex )
+            {
+                _logger.LogError($"[{methodName}] Failed, reason: {ex.Message}");
+                throw;
+            }
             
-            _context.ContactsInfos.Remove(contactInfo);
-            
-            _context.SaveChanges();
-            
-            return true;
         }
 
         public ContactModel Update(ContactModel contact)
         {
-            var getContact = _context.Contacts.Where(c => c.Id == contact.Id).FirstOrDefault();
+            const string methodName = nameof(Update);
 
-            getContact.Name = contact.Name;
+            try
+            {
+                _logger.LogTrace($"[{methodName}] Invoked");
 
-            getContact.Surname = contact.Surname;
+                _logger.LogDebug($"[{methodName}] Getting contact info with giving id");
+                var getContact = _context.Contacts.Where(c => c.Id == contact.Id).FirstOrDefault();
 
-            getContact.Company = contact.Company;
+                _logger.LogDebug($"[{methodName}] Setting contact infos");
+                getContact.Name = contact.Name;
 
-            _context.SaveChanges();
+                getContact.Surname = contact.Surname;
 
-            return contact;
+                getContact.Company = contact.Company;
+
+                _context.SaveChanges();
+
+
+                _logger.LogTrace($"[{methodName}] Returning result.");
+                return contact;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{methodName}] Failed, reason: {ex.Message}");
+                throw;
+            }
         }
     }
 }
